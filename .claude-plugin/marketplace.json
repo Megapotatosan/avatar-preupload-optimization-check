@@ -1,0 +1,12 @@
+{
+  "name": "megapotatosan-vrchat",
+  "description": "VRChat avatar tooling skills by Megapotatosan",
+  "owner": { "name": "Megapotatosan" },
+  "plugins": [
+    {
+      "name": "avatar-preupload-optimization-check",
+      "source": "./",
+      "description": "Quality-first pre-upload QA for VRChat avatars (VCC/ALCOM): package pre-check, NDMF-processed audit, lossless AAO/LAC optimization. Never uploads."
+    }
+  ]
+}

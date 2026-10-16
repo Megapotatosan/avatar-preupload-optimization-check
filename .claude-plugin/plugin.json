@@ -1,0 +1,10 @@
+{
+  "name": "avatar-preupload-optimization-check",
+  "version": "1.0.0",
+  "description": "Quality-first pre-upload QA for VRChat avatars in VCC/ALCOM Unity projects: package pre-check, NDMF-processed performance audit, lossless AAO/LAC optimization, optional Meshia/VQT. Never uploads.",
+  "author": { "name": "Megapotatosan" },
+  "homepage": "https://github.com/Megapotatosan/avatar-preupload-optimization-check",
+  "repository": "https://github.com/Megapotatosan/avatar-preupload-optimization-check",
+  "license": "MIT",
+  "keywords": ["vrchat", "avatar", "unity", "ndmf", "avatar-optimizer", "vcc", "alcom"]
+}
