@@ -512,6 +512,14 @@ def scan_avatars(proj, rep):
 
 # --------------------------------------------------------------------------- #
 def main():
+    # Windows consoles / captured pipes often default to cp1252 or cp950, which can't encode the
+    # status icons and arrows below; force UTF-8 so the script never crashes on output.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (ValueError, OSError):
+                pass
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("project")
     ap.add_argument("--target", choices=["pc", "mobile", "both"], default="pc")

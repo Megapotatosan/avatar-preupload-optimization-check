@@ -33,7 +33,7 @@ def run_on_mock(variant, target="pc"):
     tmp = tempfile.mkdtemp(prefix=f"mock_{variant}_")
     subprocess.run([sys.executable, MAKE_MOCK, tmp, variant], check=True)
     p = subprocess.run([sys.executable, SCRIPT, tmp, "--target", target, "--json"],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, encoding="utf-8")
     return p.returncode, json.loads(p.stdout)
 
 
@@ -97,8 +97,19 @@ class MockProjects(unittest.TestCase):
     def test_not_vcc(self):
         tmp = tempfile.mkdtemp()
         os.makedirs(os.path.join(tmp, "Assets"))
-        p = subprocess.run([sys.executable, SCRIPT, tmp], capture_output=True, text=True)
+        p = subprocess.run([sys.executable, SCRIPT, tmp], capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(p.returncode, 2)
+
+    def test_non_utf8_console_does_not_crash(self):
+        # Simulates a Windows console / pipe (cp950, cp1252) that can't encode the icons and arrows.
+        tmp = tempfile.mkdtemp(prefix="mock_bad_")
+        subprocess.run([sys.executable, MAKE_MOCK, tmp, "bad"], check=True)
+        for enc in ("cp1252", "cp950"):
+            env = dict(os.environ, PYTHONIOENCODING=enc)
+            for extra in ([], ["--json"]):
+                with self.subTest(enc=enc, extra=extra):
+                    p = subprocess.run([sys.executable, SCRIPT, tmp] + extra, capture_output=True, env=env)
+                    self.assertEqual(p.returncode, 2, p.stderr.decode("utf-8", "replace")[-500:])
 
 
 if __name__ == "__main__":
